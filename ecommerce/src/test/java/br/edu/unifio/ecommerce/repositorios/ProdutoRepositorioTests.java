@@ -8,7 +8,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Sort;
@@ -17,6 +20,7 @@ import br.edu.unifio.ecommerce.entidades.Categoria;
 import br.edu.unifio.ecommerce.entidades.Produto;
 
 @SpringBootTest 
+@TestMethodOrder (MethodOrderer.OrderAnnotation.class)
 public class ProdutoRepositorioTests {
     @Autowired 
     private CategoriaRepositorio categoriaRepositorio;
@@ -25,6 +29,7 @@ public class ProdutoRepositorioTests {
     private ProdutoRepositorio produtoRepositorio;
 
     @Test 
+    @Order (3) 
     public void deveSalvarUmProdutoNovo () {
         var produto = new Produto ();
         produto.setNome("Notebook Lenovo Legion 5i");
@@ -42,6 +47,7 @@ public class ProdutoRepositorioTests {
     }
 
     @Test 
+    @Order (2) 
     public void deveBuscarUmProdutoPorId () {
         Produto produto = produtoRepositorio.findById (Integer.parseInt("3")).orElseThrow();
         
@@ -49,16 +55,18 @@ public class ProdutoRepositorioTests {
         assertEquals("Fone de Ouvido Bluetooth", produto.getNome());
     }
 
-    @Test 
+    @Test
+    @Order (1) 
     public void deveBuscarTodosOsProdutos () {
         List<Produto> produtos = produtoRepositorio.findAll(Sort.by("nome"));
 
-        assertEquals(7, produtos.size());
+        assertEquals(5, produtos.size());
         assertEquals("Código Limpo", produtos.get(0).getNome());
         assertEquals("Fone de Ouvido Bluetooth", produtos.get(1).getNome());
     }
 
-    @Test 
+    @Test
+    @Order (4)  
     public void deveExcluirUmProdutoPorId () {
         Produto produto = new Produto ();
         produto.setNome("Nome Teste");
@@ -77,6 +85,7 @@ public class ProdutoRepositorioTests {
     }
 
     @Test 
+    @Order (5) 
     public void deveAtualizarONomeDeUmProduto () {
         Produto produto = new Produto ();
         produto.setNome("Nome Teste");
